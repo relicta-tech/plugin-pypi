@@ -113,13 +113,13 @@ func TestValidate(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Clear env vars first
-			os.Unsetenv("PYPI_USERNAME")
-			os.Unsetenv("PYPI_PASSWORD")
+			_ = os.Unsetenv("PYPI_USERNAME")
+			_ = os.Unsetenv("PYPI_PASSWORD")
 
 			// Set env vars
 			for k, v := range tt.envVars {
-				os.Setenv(k, v)
-				defer os.Unsetenv(k)
+				_ = os.Setenv(k, v)
+				defer func(key string) { _ = os.Unsetenv(key) }(k)
 			}
 
 			resp, err := p.Validate(ctx, tt.config)
@@ -219,13 +219,13 @@ func TestParseConfig(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Clear env vars first
-			os.Unsetenv("PYPI_USERNAME")
-			os.Unsetenv("PYPI_PASSWORD")
+			_ = os.Unsetenv("PYPI_USERNAME")
+			_ = os.Unsetenv("PYPI_PASSWORD")
 
 			// Set env vars
 			for k, v := range tt.envVars {
-				os.Setenv(k, v)
-				defer os.Unsetenv(k)
+				_ = os.Setenv(k, v)
+				defer func(key string) { _ = os.Unsetenv(key) }(k)
 			}
 
 			cfg := p.parseConfig(tt.config)
